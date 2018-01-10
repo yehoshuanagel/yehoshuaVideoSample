@@ -9,11 +9,11 @@
 import Foundation
 import AVKit
 
-protocol VideoManagerDelegate {
+protocol VideoManagerDelegate : class {
     func currentlyPlayingVideoChanged(newVideo : Int?)
 }
 
-struct VideoManager {
+class VideoManager {
     private var players : [AVPlayer] = []
     
     public var currentlyPlaying : Int? {
@@ -24,8 +24,8 @@ struct VideoManager {
         }
     }
     
-    var numberOfVideos = 3
-    var delegate : VideoManagerDelegate?
+    let numberOfVideos = 3
+    weak var delegate : VideoManagerDelegate?
     
     init() {
         for index in 0..<numberOfVideos {
@@ -44,6 +44,10 @@ struct VideoManager {
         }
     }
     
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
     public func add(videoNumber index : Int, toView view : UIView) {
         if let playerLayers = view.layer.sublayers?.filter({$0 is AVPlayerLayer}),
             playerLayers.count > 0 {
@@ -57,7 +61,7 @@ struct VideoManager {
         view.layer.addSublayer(layer)
     }
     
-    public mutating func playPause(videoNumber index : Int) {
+    public func playPause(videoNumber index : Int) {
         let player = players[index]
         if player.isPlaying {
             player.pause()
@@ -67,7 +71,7 @@ struct VideoManager {
         }
     }
     
-    public mutating func play(videoNumber index : Int) {
+    public func play(videoNumber index : Int) {
         let player = players[index]
         players.forEach({ (eachPlayer) in
             if eachPlayer == player {
