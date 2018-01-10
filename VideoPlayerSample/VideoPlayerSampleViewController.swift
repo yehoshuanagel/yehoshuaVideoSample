@@ -13,14 +13,14 @@ import AVKit
 class VideoPlayerSampleViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, VideoTableViewCellDelegate, VideoManagerDelegate {
     @IBOutlet weak var videosTableView: UITableView!
     
-    let numberOfVideos = 3
+    var numberOfVideos : Int!
     
-    var videoManager = VideoManager()
+    let videoManager = VideoManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         videoManager.delegate = self
-        videoManager.numberOfVideos = numberOfVideos
+        numberOfVideos = videoManager.numberOfVideos
     }
     
     override func viewDidAppear(_ animated: Bool) {
