@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Video Player Sample View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="VideoPlayerSampleViewController" customModule="VideoPlayerSample" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="400" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="QA5-av-cwD" userLabel="Videos Table View">
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="VideoCell" id="oBh-pj-PPW" userLabel="Video Cell" customClass="VideoTableViewCell" customModule="VideoPlayerSample" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="400"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="oBh-pj-PPW" id="9pa-pg-xFk">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="399.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cell title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vJf-dh-jBj" userLabel="Cell title">
+                                                    <rect key="frame" x="25" y="21" width="325" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wqf-Ek-SUj" userLabel="Video Player">
+                                                    <rect key="frame" x="35" y="62" width="305" height="307"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </view>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="46c-IV-AsS" userLabel="Play Pause Button">
+                                                    <rect key="frame" x="55" y="299" width="50" height="50"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="50" id="Sob-ws-SCS"/>
+                                                        <constraint firstAttribute="height" constant="50" id="kNI-yX-S32"/>
+                                                    </constraints>
+                                                    <state key="normal" title="▶️"/>
+                                                    <state key="selected" title="⏸"/>
+                                                    <state key="highlighted" title="⏸"/>
+                                                    <connections>
+                                                        <action selector="playPauseButtonTapped:" destination="oBh-pj-PPW" eventType="touchUpInside" id="KhC-DS-n7H"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="vJf-dh-jBj" firstAttribute="leading" secondItem="9pa-pg-xFk" secondAttribute="leadingMargin" constant="10" id="3OG-RH-bL4"/>
+                                                <constraint firstItem="vJf-dh-jBj" firstAttribute="top" secondItem="9pa-pg-xFk" secondAttribute="topMargin" constant="10" id="CTW-D8-xTV"/>
+                                                <constraint firstItem="Wqf-Ek-SUj" firstAttribute="bottom" secondItem="46c-IV-AsS" secondAttribute="bottom" constant="20" id="KXE-yF-5Ky"/>
+                                                <constraint firstItem="Wqf-Ek-SUj" firstAttribute="top" secondItem="vJf-dh-jBj" secondAttribute="bottom" constant="20" id="WQP-IC-1ZT"/>
+                                                <constraint firstItem="Wqf-Ek-SUj" firstAttribute="leading" secondItem="9pa-pg-xFk" secondAttribute="leadingMargin" constant="20" id="WW3-NQ-IR8"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="Wqf-Ek-SUj" secondAttribute="bottom" constant="20" id="brE-pX-lbQ"/>
+                                                <constraint firstItem="Wqf-Ek-SUj" firstAttribute="leading" secondItem="46c-IV-AsS" secondAttribute="leading" constant="-20" id="gEl-xg-qzg"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="Wqf-Ek-SUj" secondAttribute="trailing" constant="20" id="kvM-Aq-msj"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="vJf-dh-jBj" secondAttribute="trailing" constant="10" id="ruf-jC-J7f"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="cellTitleLabel" destination="vJf-dh-jBj" id="ubO-BU-3A2"/>
+                                            <outlet property="playPauseButton" destination="46c-IV-AsS" id="lBh-0Z-uPY"/>
+                                            <outlet property="videoPlayerView" destination="Wqf-Ek-SUj" id="Xk1-Dx-hWP"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="f2e-09-7v3"/>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="m6j-QI-99X"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="QA5-av-cwD" secondAttribute="trailing" id="40y-Cs-1RF"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="QA5-av-cwD" secondAttribute="bottom" id="Ndv-Lf-Mxd"/>
+                            <constraint firstItem="QA5-av-cwD" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="UL1-hQ-9Rj"/>
+                            <constraint firstItem="QA5-av-cwD" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="evg-VP-3Fc"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                    </view>
+                    <connections>
+                        <outlet property="videosTableView" destination="QA5-av-cwD" id="C6L-vG-oD3"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+        </scene>
+    </scenes>
+</document>
