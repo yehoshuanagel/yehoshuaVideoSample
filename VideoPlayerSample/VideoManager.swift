@@ -10,16 +10,16 @@ import Foundation
 import AVKit
 
 protocol VideoManagerDelegate : class {
-    func currentlyPlayingVideoChanged(newVideo : Int?)
+    func currentlyPlayingVideoChanged(newVideoIndex : Int?, previouslyPlayingIndex : Int?)
 }
 
 class VideoManager {
     private var players : [AVPlayer] = []
     
-    public var currentlyPlaying : Int? {
+    public private(set) var currentlyPlaying : Int? {
         willSet {
             if currentlyPlaying != newValue {
-                delegate?.currentlyPlayingVideoChanged(newVideo: newValue)
+                delegate?.currentlyPlayingVideoChanged(newVideoIndex: newValue, previouslyPlayingIndex: currentlyPlaying)
             }
         }
     }
@@ -57,7 +57,6 @@ class VideoManager {
         let layer: AVPlayerLayer = AVPlayerLayer(player: players[index])
         layer.frame = view.bounds
         layer.videoGravity = .resizeAspectFill
-        view.layer.sublayers?.filter{ $0 is AVPlayerLayer }.forEach{ $0.removeFromSuperlayer() }
         view.layer.addSublayer(layer)
     }
     
@@ -72,15 +71,13 @@ class VideoManager {
     }
     
     public func play(videoNumber index : Int) {
-        let player = players[index]
-        players.forEach({ (eachPlayer) in
-            if eachPlayer == player {
-                eachPlayer.play()
-                currentlyPlaying = index
-            } else {
-                eachPlayer.pause()
+        if index != currentlyPlaying {
+            if let toPause = currentlyPlaying {
+                players[toPause].pause()
             }
-        })
+            players[index].play()
+            currentlyPlaying = index
+        }
     }
 }
 

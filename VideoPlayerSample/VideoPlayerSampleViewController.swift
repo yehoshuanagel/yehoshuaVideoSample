@@ -13,14 +13,11 @@ import AVKit
 class VideoPlayerSampleViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, VideoTableViewCellDelegate, VideoManagerDelegate {
     @IBOutlet weak var videosTableView: UITableView!
     
-    var numberOfVideos : Int!
-    
-    let videoManager = VideoManager()
+    private let videoManager = VideoManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         videoManager.delegate = self
-        numberOfVideos = videoManager.numberOfVideos
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -29,22 +26,24 @@ class VideoPlayerSampleViewController: UIViewController, UITableViewDataSource, 
     }
     
     //VideoManagerDelegate
-    func currentlyPlayingVideoChanged(newVideo : Int?) {
-        for row in 0..<numberOfVideos {
-            if let cell = videosTableView.cellForRow(at: IndexPath(row: row, section: 0)) as? VideoTableViewCell {
-                cell.playPauseButton.isSelected = (newVideo == row)
-            }
+    func currentlyPlayingVideoChanged(newVideoIndex : Int?, previouslyPlayingIndex : Int?) {
+        if let row = previouslyPlayingIndex, let cell = videosTableView.cellForRow(at: IndexPath(row: row, section: 0)) as? VideoTableViewCell {
+            cell.playPauseButton.isSelected = false
+        }
+        if let row = newVideoIndex, let cell = videosTableView.cellForRow(at: IndexPath(row: row, section: 0)) as? VideoTableViewCell {
+            cell.playPauseButton.isSelected = true
         }
     }
     
     //UITableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return numberOfVideos
+        return videoManager.numberOfVideos
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: "VideoCell") as? VideoTableViewCell {
             cell.cellTitleLabel.text = "Video number: \(indexPath.row + 1)"
+            cell.cellRow = indexPath.row
             
             videoManager.add(videoNumber: indexPath.row, toView: cell.videoPlayerView)
             cell.delegate = self
@@ -57,31 +56,36 @@ class VideoPlayerSampleViewController: UIViewController, UITableViewDataSource, 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         tableView.scrollToRow(at: indexPath, at: .middle, animated: true)
+        videoManager.play(videoNumber: indexPath.row)
     }
     
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if decelerate == false {
+            scrollViewDidEndDecelerating(scrollView)
+        }
+    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         var greatestHeight : CGFloat = 0
         var mostVisibleRow : Int?
-        for indexPath in videosTableView.indexPathsForVisibleRows ?? [] {
+        videosTableView.indexPathsForVisibleRows?.forEach({ (indexPath) in
             let cellRect = videosTableView.rectForRow(at: indexPath)
             let visibleHeight = abs(videosTableView.bounds.intersection(cellRect).size.height)
             if visibleHeight > greatestHeight {
                 greatestHeight = visibleHeight
                 mostVisibleRow = indexPath.row
             }
-        }
+        })
+        
         if let row = mostVisibleRow {
             videoManager.play(videoNumber: row)
         }
     }
     
     //VideoTableViewCellDelegate
-    func playPauseButtonTapped(_ button: UIButton) {
-        if let cell = button.superview?.superview as? UITableViewCell {
-            if let row = videosTableView.indexPath(for: cell)?.row {
-                videoManager.playPause(videoNumber: row)
-            }
+    func playPauseButtonTapped(cellRow : Int?) {
+        if let row = cellRow {
+            videoManager.playPause(videoNumber: row)
         }
     }
-
 }
