@@ -66,18 +66,20 @@ class VideoPlayerSampleViewController: UIViewController, UITableViewDataSource, 
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        var greatestHeight : CGFloat = 0
-        var mostVisibleRow : Int?
+        var shortestDistanceToMidpoint : CGFloat = self.view.frame.height
+        var mostCentralRow : Int?
         videosTableView.indexPathsForVisibleRows?.forEach({ (indexPath) in
-            let cellRect = videosTableView.rectForRow(at: indexPath)
-            let visibleHeight = abs(videosTableView.bounds.intersection(cellRect).size.height)
-            if visibleHeight > greatestHeight {
-                greatestHeight = visibleHeight
-                mostVisibleRow = indexPath.row
+            let rectOfCell = videosTableView.rectForRow(at: indexPath)
+            let cellMidPoint = videosTableView.convert(rectOfCell, to: videosTableView.superview).midY
+            
+            let distance = abs(videosTableView.frame.midY - cellMidPoint)
+            if distance < shortestDistanceToMidpoint {
+                shortestDistanceToMidpoint = distance
+                mostCentralRow = indexPath.row
             }
         })
         
-        if let row = mostVisibleRow {
+        if let row = mostCentralRow {
             videoManager.play(videoNumber: row)
         }
     }
