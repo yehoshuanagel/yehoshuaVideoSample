@@ -9,7 +9,7 @@
 import UIKit
 
 protocol VideoTableViewCellDelegate : class {
-    func playPauseButtonTapped(_ button: UIButton)
+    func playPauseButtonTapped(cellRow: Int?)
 }
 
 class VideoTableViewCell : UITableViewCell {
@@ -18,9 +18,10 @@ class VideoTableViewCell : UITableViewCell {
     @IBOutlet weak var playPauseButton: UIButton!
     
     weak var delegate : VideoTableViewCellDelegate?
+    var cellRow : Int?
     
     @IBAction func playPauseButtonTapped(_ sender: UIButton) {
-        delegate?.playPauseButtonTapped(sender)
+        delegate?.playPauseButtonTapped(cellRow: cellRow)
     }
     
 }
